@@ -1,5 +1,5 @@
 {
-  "name": "goodreads-with-nodejs-react",
+  "name": "goodreads",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/asmaaMahmoud022/goodReads-with-NodeJS-React/issues"
   },
-  "homepage": "https://github.com/asmaaMahmoud022/goodReads-with-NodeJS-React#readme"
+  "homepage": "https://github.com/asmaaMahmoud022/goodReads-with-NodeJS-React#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.12.7"
+  }
 }
