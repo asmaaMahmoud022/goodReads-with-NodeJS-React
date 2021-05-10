@@ -6,6 +6,6 @@ const ratingSchema = new mongoose.Schema({
     book: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' }
 })
 
-const RateModel = mongoose.model('Rating', ratingSchema)
+const RatingModel = mongoose.model('Rating', ratingSchema)
 
-module.exports = RateModel
+module.exports = RatingModel
