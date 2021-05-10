@@ -21,7 +21,7 @@ userSchema.pre('save', async function(next){
     next();
 })
 
-schema.methods.getFullName = function getFullName() {
+userSchema.methods.getFullName = function getFullName() {
     return this.first_name + " " + this.last_name;
 };
 
