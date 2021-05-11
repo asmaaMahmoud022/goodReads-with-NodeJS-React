@@ -6,6 +6,6 @@ const reviewSchema = new mongoose.Schema({
     book: { type: mongoose.Schema.Types.ObjectId, ref: "Book" }
 });
   
-const ReviewModel = mongoose.model("Review", reviewSchema);
+const ReviewModel = mongoose.model("Review", reviewSchema)
   
-module.exports = ReviewModel;
+module.exports = ReviewModel
