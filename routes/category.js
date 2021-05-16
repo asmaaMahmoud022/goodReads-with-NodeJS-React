@@ -1,5 +1,6 @@
 const express = require("express")
 const category_model = require("../models/category")
+const book_model = require("../models/book")
 const router= express.Router()
 
 
@@ -23,22 +24,32 @@ router.post('/', (req, res) => {
 
 // list all categories
 router.get('/', (req, res) => {
-    category_model.find({},(err, data) => {
+    const limitVar = parseInt(req.query.limit); 
+    const skipVar = parseInt(req.query.skip);
+    category_model.find({} ,(err, data) => {
         if (err) {
             return res.send('Error while get data: ', err)
         } else {
             return res.json(data)
         }
-    });
+    }).limit(limitVar)
+      .skip(skipVar);
   })
 
 // get category with id
 router.get('/:id', (req, res) => {
-    category_model.findById({ _id : req.params.id},(err, data) => {
+    const limitVar = parseInt(req.query.limit); 
+    const skipVar = parseInt(req.query.skip);
+    category_model.findById(req.params.id).exec((err, c_data) => {    
         if (err) {
-            return res.send('Error while fet data: ', err)
+            return res.send('Error while get data: ', err)
         } else {
-            return res.json(data)
+            book_model.find({"category":req.params.id}).limit(limitVar).skip(skipVar).populate('author').exec((err,b_data) => { 
+                return res.json({
+                    category_data:c_data,
+                    books:b_data,
+                });     
+            })
         }
     });
 });
