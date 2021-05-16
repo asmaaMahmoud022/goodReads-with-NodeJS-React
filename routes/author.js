@@ -27,13 +27,16 @@ router.post('/', (req, res) => {
 
 // list all author
 router.get('/', (req, res) => {
+    const limitVar = parseInt(req.query.limit); 
+    const skipVar = parseInt(req.query.skip);
     author_model.find({},(err, data) => {
         if (err) {
             return res.send('Error while get data: ', err)
         } else {
             return res.json(data)
         }
-    });
+    }).limit(limitVar)
+      .skip(skipVar);
   })
 
 // get author with id
