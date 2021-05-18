@@ -10,22 +10,6 @@ dotenv.config()
 const accessTokenSecret = 'youraccesstokensecret'
 
 
-// router.post('/login', async(req, res) => {
-//     try {
-//         const { email, password } = req.body
-//         const u = await UserModel.findOne({ email: email, password: password }, {})
-//         console.log(u.image)
-//         if (u) {
-//             const accessToken = jwt.sign({ id: u.id, email: u.email, image: u.image }, accessTokenSecret, { expiresIn: '365d' });
-//             return res.json({
-//                 message: 'User Logged in Successfully',
-//                 token: accessToken
-//             });
-//         }
-//     } catch (err) {
-//         return res.status(401).send({ message: 'Login Failed !!' })
-//     }
-// });
 router.post("/login", async (req, res) => {
     console.log(req.body);
     const user = await UserModel.findOne({email: req.body.email})
