@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const express = require('express')
+const jwt_functions = require("../middlewares/auth")
 const dotenv = require('dotenv')
 const upload = require('../middlewares/image')
 const UserModel = require('../models/user')
@@ -9,7 +10,41 @@ dotenv.config()
 const accessTokenSecret = 'youraccesstokensecret'
 
 
-
+// router.post('/login', async(req, res) => {
+//     try {
+//         const { email, password } = req.body
+//         const u = await UserModel.findOne({ email: email, password: password }, {})
+//         console.log(u.image)
+//         if (u) {
+//             const accessToken = jwt.sign({ id: u.id, email: u.email, image: u.image }, accessTokenSecret, { expiresIn: '365d' });
+//             return res.json({
+//                 message: 'User Logged in Successfully',
+//                 token: accessToken
+//             });
+//         }
+//     } catch (err) {
+//         return res.status(401).send({ message: 'Login Failed !!' })
+//     }
+// });
+router.post("/login", async (req, res) => {
+    console.log(req.body);
+    const user = await UserModel.findOne({email: req.body.email})
+    console.log(user);
+    if(user == null){
+        return res.status(400).json({token:""})
+    }
+    try {
+        if(await bcrypt.compare(req.body.password, UserModel.password)){
+            const token = jwt_functions.generateAccessToken({ email: req.body.email });
+            console.log(token);
+            res.json({token});
+        }else{
+            res.send("wrong mail or password")
+        }
+    } catch (error) {
+        res.status(500).json({token:""})
+    }
+})
 
 router.post('/admin/login', (req, res) => {
     const { username, password } = req.body
