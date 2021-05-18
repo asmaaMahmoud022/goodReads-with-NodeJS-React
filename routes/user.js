@@ -57,4 +57,13 @@ router.post('/signup', upload.single('image'), (req, res, next) => {
 });
 
 
+router.get('/all', async(req, res, next) => {
+    try {
+        const users = await UserModel.find({})
+        return res.json(users)
+    } catch (err) {
+        next(err)
+    }
+})
+
 module.exports = router;
