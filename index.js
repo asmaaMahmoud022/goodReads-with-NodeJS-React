@@ -1,5 +1,6 @@
 const express = require("express")
 const mongoose = require("mongoose")
+const userRouter = require("./routes/user")
 const categoryRouter = require("./routes/category")
 // const bookRouter = require("./routes/book")
 const authorRouter = require("./routes/author")
@@ -12,6 +13,7 @@ app.use('/categories',categoryRouter)
 // app.use('/book',bookRouter)
 app.use('/authors',authorRouter)
 // app.use('/ratings',ratingRouter)
+app.use('/users',userRouter)
 mongoose.connect('mongodb://localhost:27017/goodreads', {
     useUnifiedTopology: true,
     useNewUrlParser: true,

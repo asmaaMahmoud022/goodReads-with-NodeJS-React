@@ -5,10 +5,10 @@ const userSchema = new mongoose.Schema({
     firstName: { type: String, required: [true, "can't be blank"], max: 20 },
     lastName: { type: String, required: [true, "can't be blank"], max: 20 },
     email: { type: String, required: [true, "can't be blank"], match: [/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/, 'Invalid Email'], unique: [true, 'Email in exists'] },
-    password: { type: String, match: [/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/, 'Invalid Password'], min: 8 },
+    password: { type: String},
     image: { type: String, required: true }
 })
-
+// , match: [/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/, 'Invalid Password'], min: 8 
 userSchema.pre('save', async function(next){
     if (this.isNew) {
         try {
