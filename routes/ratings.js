@@ -60,6 +60,36 @@ app.post('/:book', authUser, async(req, res) => {
     }
 });
 
+// Update a rate with a given id
+app.patch('/:id', async(req, res) => {
+    try {
+        let rate = await Rate.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
+        res.json({
+            message: "rate updated successfully",
+            data: rate
+        });
+    } catch (err) {
+        res.json({
+            message: 'error',
+            err: err
+        });
+    }
+});
+
+// delete a rate with a given id.
+app.delete('/:id', async(req, res) => {
+    try {
+        let rate = await Rate.findByIdAndDelete(req.params.id);
+        res.json({
+            message: "rate deleted successfully"
+        });
+    } catch (err) {
+        res.json({
+            message: 'error',
+            err: err
+        });
+    }
+});
 
 
 module.exports = app
