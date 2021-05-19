@@ -70,4 +70,39 @@ app.post("/:book", authUser, async (req, res) => {
   }
 });
 
+// Update a review with a given id
+app.patch("/:id", async (req, res) => {
+  try {
+    let review = await Review.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true }
+    );
+    res.json({
+      message: "review updated successfully",
+      data: reviews,
+    });
+  } catch (err) {
+    res.json({
+      message: "error",
+      err: err,
+    });
+  }
+});
+
+// delete a review with a given id.
+app.delete("/:id", async (req, res) => {
+  try {
+    let review = await Review.findByIdAndDelete(req.params.id);
+    res.json({
+      message: "review deleted successfully",
+    });
+  } catch (err) {
+    res.json({
+      message: "error",
+      err: err,
+    });
+  }
+});
+
 module.exports = app;
