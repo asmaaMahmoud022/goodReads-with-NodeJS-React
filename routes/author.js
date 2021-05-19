@@ -1,5 +1,6 @@
 const express = require("express")
 const author_model = require("../models/author")
+const book_model = require("../models/book")
 const router= express.Router()
 
 
@@ -39,13 +40,19 @@ router.get('/', (req, res) => {
       .skip(skipVar);
   })
 
+  
 // get author with id
 router.get('/:id', (req, res) => {
-    author_model.findById({ _id : req.params.id},(err, data) => {
+    author_model.findById(req.params.id).exec((err, auth_data) => {    
         if (err) {
-            return res.send('Error while fet data: ', err)
+            return res.send('Error while get data: ', err)
         } else {
-            return res.json(data)
+            book_model.find({"author":req.params.id}).exec((err,b_data) => { 
+                return res.json({
+                    author_data:auth_data,
+                    books:b_data,
+                });     
+            })
         }
     });
 });
