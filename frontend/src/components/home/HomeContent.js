@@ -4,11 +4,11 @@ export default class HomeContent extends Component {
   render() {
     return (
       <Jumbotron>
-        <h2 className="display-3">Welcome to Good Reads!</h2>
-        <p className="lead">Where you can increase your knowledge</p>
+        <h2 className="display-3">Welcome to Good Reads Website!</h2>
+        <p className="lead">Here you can increase your knowledge and your mind</p>
         <hr className="my-2" />
 
-        <p className="lead">Join us NOW!</p>
+        <p className="lead">NOW .. Join us</p>
       </Jumbotron>
     );
   }

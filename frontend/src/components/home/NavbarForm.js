@@ -66,6 +66,7 @@ class NavbarForm extends Component {
   }
 }
 const mapStateToProps = (state) => {
+  // const { email, password } = state.login;
   const { email, password } = state.login;
   return { email, password };
 };
