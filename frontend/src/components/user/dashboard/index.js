@@ -70,11 +70,7 @@ class Dashboard extends Component {
         }
       },
     },
-    {
-      Header: "Shelve",
-      Cell: this.renderSelect.bind(this),
-      sortable: false,
-    },
+
   ];
 
   render() {
