@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 
-const ratingSchema = new mongoose.Schema({
-    rate: { type: Number },
+const rateSchema = new mongoose.Schema({
+    value: { type: Number },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     book: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' }
 })
 
-const RatingModel = mongoose.model('Rating', ratingSchema)
+const rateModel = mongoose.model('Rating', rateSchema)
 
-module.exports = RatingModel
+module.exports = rateModel
