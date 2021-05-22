@@ -1,78 +1,129 @@
-const express = require("express")
-const book_model = require("../models/book")
-const rating_model = require("../models/rating")
-const router= express.Router()
+var express = require("express");
+var router = express.Router();
+var Book = require("../models/book");
+var Rate = require("../models/rating");
+var Review = require("../models/review");
+var Todo = require("../models/todo");
 
+const authUser = require("../middlewares/authMWare");
+const upload = require("../middlewares/imageUpload");
 
-// create new book 
-router.post('/', (req, res) => {
-    // get book data from body
-    const bookData=req.body
-    // create new instance
-    const bookInstance= new book_model({
-        name: bookData.name,
-        cover: bookData.cover,
-        auther: bookData.auther,
-        category: bookData.category
+router.get("/", async (req, res) => {
+  try {
+    const books = await Book.find().populate("author").populate("category");
+    res.json({
+      message: "All books",
+      data: books,
     });
-    // save new book to db
-    bookInstance.save((err, doc) => {
-        if (err) {
-            return res.send('Error while saving data: ', err)
-        } else {
-            return res.json(doc)
-        }
-    });
+  } catch (err) {
+    console.log(err);
+    return res.status(403).send({ message: "can not get all books" });
+  }
 });
 
-// list all book
-router.get('/', (req, res) => {
-    const limitVar = parseInt(req.query.limit); 
-    const skipVar = parseInt(req.query.skip);
-    book_model.find().limit(limitVar).skip(skipVar).populate('author').exec((err, data) => {    
-        if (err) {
-            return res.send('Error while get data: ', err)
-        } else {
-            return res.json(data)
-        }
-    });
-})
+router.get("/:id", authUser, async (req, res) => {
+  try {
+    const book = await Book.findById(req.params.id)
+      .populate("author")
+      .populate("category");
+    const rate = await Rate.find({}).where("book").equals(book);
+    const reviews = await Review.find({})
+      .sort({ date: -1 })
+      .where("book")
+      .equals(book)
+      .populate("user", "firstName lastName");
+    const todo = await Todo.findOne()
+      .where("user")
+      .equals(req.user.id)
+      .where("book")
+      .equals(book);
+    const myRate = await Rate.findOne()
+      .where("user")
+      .equals(req.user.id)
+      .where("book")
+      .equals(book);
 
-// get book with id
-router.get('/:id', (req, res, next) => {
-    book_model.findById(req.params.id).populate('author').populate('category').exec((err, data) => {
-        rating_model.find({"book":req.params.id},(err, rates) => {   
-            return res.json({
-                book_data:data,
-                rate:rates
-             });
-        })
+    res.json({
+      message: "show book details",
+      data: {
+        ...book.toObject(),
+        rates: rate,
+        reviews: reviews,
+        todo,
+        myRate: myRate,
+      },
+    });
+  } catch (err) {
+    return res.status(404).send({ message: "can not get this book" });
+  }
+});
+
+router.post("/", authUser, async (req, res) => {
+  if (!req.user.isAdmin) {
+    return res.status(401).send({ message: "you can not do this only admins" });
+  }
+  try {
+    upload(req, res, async (err) => {
+      try {
+        if (req.file == undefined) {
+          return res.status(400).send({ message: "Enter book image" });
+        } else {
+          const image = req.file.filename;
+          const { name, author, category } = req.body;
+          let book = await Book.create({ name, image, author, category });
+
+          book = await book
+            .populate("author")
+            .populate("category")
+            .execPopulate();
+          res.json({
+            message: "book added successfully",
+            data: book,
+          });
+        }
+      } catch (err) {
+        console.log("eee", err);
+        return res
+          .status(400)
+          .send({ message: "Failed, check entered data !!" });
+      }
+    });
+  } catch (err) {
+    return res.status(403).send({ message: "book added failed" });
+  }
+});
+
+router.patch("/:id", authUser, async (req, res) => {
+  if (!req.user.isAdmin) {
+    return res.status(401).send({ message: "you can not do this only admins" });
+  }
+  try {
+    let book = await Book.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
     })
+      .populate("author")
+      .populate("category");
+    res.json({
+      message: "book updated successfully",
+      data: book,
+    });
+  } catch (err) {
+    return res.status(403).send({ message: "book updated failed" });
+  }
 });
 
-   
-// update book with id
-router.put('/:id', (req, res) => {
-    const bookData=req.body
-    book_model.findOneAndUpdate({ _id : req.params.id}, {$set: {name: bookData.name, cover: bookData.cover,auther: bookData.auther, category: bookData.category}}, (err, data) => {
-        if (err) {
-            return res.send('Error while update data: ', err)
-        } else {
-            return res.json(data)
-        }
+router.delete("/:id", authUser, async (req, res) => {
+  if (!req.user.isAdmin) {
+    return res.status(401).send({ message: "you can not do this only admins" });
+  }
+  try {
+    let book = await Book.findByIdAndDelete(req.params.id);
+    res.json({
+      message: "book deleted successfully",
     });
-
+  } catch (err) {
+    return res.status(403).send({ message: "book deleted failed" });
+  }
 });
-   
-// delete book with id
-router.delete('/:id', (req, res) => {
-    book_model.remove({ _id: req.params.id,}, (err) => {
-        if (err) {
-            return res.send('Error while delete book : ', err)
-        } else {
-            return res.send('book deleted successfully ')
-        }
-    });
-});  
 
-module.exports = router
+module.exports = router;

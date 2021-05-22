@@ -1,11 +1,7 @@
-// /categories/:id?page=1 GET  #anoyone
-// CRUD operations..
-// rate and review .. POST to add (userid, bookid, comment);
-// get(by book id) .. will take a book id and return reviews or rates.
 
 const express = require('express')
 const app = express.Router();
-var Rate = require('../models/rate');
+var Rate = require('../models/rating');
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 const authUser = require('../middlewares/authMWare')

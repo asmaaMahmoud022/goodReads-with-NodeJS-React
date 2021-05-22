@@ -1,83 +1,87 @@
-const express = require("express")
-const category_model = require("../models/category")
-const book_model = require("../models/book")
-const router= express.Router()
 
+const express = require('express')
+const app = express.Router();
+var Category = require('../models/category');
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+const authUser = require('../middlewares/authMWare')
 
-// create new category 
-router.post('/', (req, res) => {
-    // get category data from body
-    const categoryData=req.body
-    // create new instance
-    const categoryInstance= new category_model({
-        name: categoryData.name,
-    });
-    // save new category to db
-    categoryInstance.save((err, doc) => {
-        if (err) {
-            return res.send('Error while saving data: ', err)
-        } else {
-            return res.json(doc)
-        }
-      });
-});
+// Get all categories
+app.get('/', async(req, res) => {
 
-// list all categories
-router.get('/', (req, res) => {
-    const limitVar = parseInt(req.query.limit); 
-    const skipVar = parseInt(req.query.skip);
-    category_model.find({} ,(err, data) => {
-        if (err) {
-            return res.send('Error while get data: ', err)
-        } else {
-            return res.json(data)
-        }
-    }).limit(limitVar)
-      .skip(skipVar);
-  })
+    try {
+        let category = await Category.find({});
+        res.json({
+            message: "Categories list",
+            data: category
+        });
+    } catch (err) {
+        return res.status(403).send({ message: 'can not get all categories' })
+    }
+})
 
-// get category with id
-router.get('/:id', (req, res) => {
-    const limitVar = parseInt(req.query.limit); 
-    const skipVar = parseInt(req.query.skip);
-    category_model.findById(req.params.id).exec((err, c_data) => {    
-        if (err) {
-            return res.send('Error while get data: ', err)
-        } else {
-            book_model.find({"category":req.params.id}).limit(limitVar).skip(skipVar).populate('author').exec((err,b_data) => { 
-                return res.json({
-                    category_data:c_data,
-                    books:b_data,
-                });     
-            })
-        }
-    });
-});
+// get a category with an id
+app.get('/:id', async(req, res) => {
 
-   
-// update category with id
-router.put('/:id', (req, res) => {
+    categoryId = req.params.id
+    try {
+        let category = await Category.findById(categoryId);
+        res.json({
+            message: "Category details",
+            data: category
+        });
+    } catch (err) {
+        return res.status(404).send({ message: 'can not get this category' })
+    }
+})
 
-const categoryData=req.body
-category_model.findOneAndUpdate({ _id : req.params.id}, {$set: { name: categoryData.name}}, (err, data) => {
-    if (err) {
-        return res.send('Error while fet data: ', err)
-    } else {
-        return res.json(data)
+// Add a new category
+app.post('/', authUser, async(req, res) => {
+    if (!req.user.isAdmin) {
+        return res.status(401).send({ message: "you can not do this only admins" })
+    }
+    try {
+
+        let category = await Category.create(req.body);
+        res.json({
+            message: "Category added successfully",
+            data: category
+        });
+    } catch (err) {
+        return res.status(401).send({ message: 'Category added field' })
     }
 });
 
+// Update a categoty with a given id
+app.patch('/:id', authUser, async(req, res) => {
+    if (!req.user.isAdmin) {
+        return res.status(401).send({ message: "you can not do this only admins" })
+    }
+    try {
+        let category = await Category.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.json({
+            message: "category updated successfully",
+            data: category
+        });
+    } catch (err) {
+        return res.status(401).send({ message: 'Category updated field' })
+    }
 });
-   
-// delete category with id
-router.delete('/:id', (req, res) => {
-    category_model.remove({ _id: req.params.id,}, (err) => {
-        if (err) {
-            return res.send('Error while delete this category : ', err)
-        } else {
-            return res.send('category deleted successfully ')
-        }
-    });
-});  
 
-module.exports = router
+// delete a category with a given id.
+app.delete('/:id', authUser, async(req, res) => {
+    if (!req.user.isAdmin) {
+        return res.status(401).send({ message: "you can not do this only admins" })
+    }
+    try {
+        let category = await Category.findByIdAndDelete(req.params.id);
+        res.json({
+            message: "category deleted successfully"
+        });
+    } catch (err) {
+        return res.status(401).send({ message: 'Category deleted field' })
+    }
+});
+
+
+module.exports = app
