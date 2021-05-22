@@ -1,10 +1,10 @@
 const express = require("express")
 const mongoose = require("mongoose")
-const userRouter = require("./routes/user")
+const authRouter = require("./routes/auth");
 const categoryRouter = require("./routes/category")
 const bookRouter = require("./routes/book")
 const authorRouter = require("./routes/author")
-const ratingRouter = require("./routes/ratings")
+const rateRouter = require("./routes/rate");
 const reviewRouter = require("./routes/reviews");
 const app = express()
 const port = 3000
@@ -13,9 +13,9 @@ app.use(express.json())
 app.use('/categories',categoryRouter)
 app.use('/books',bookRouter)
 app.use('/authors',authorRouter)
-app.use('/ratings',ratingRouter)
+app.use('/rates',rateRouter)
 app.use("/reviews", reviewRouter);
-app.use('/users',userRouter)
+app.use('/users',authRouter)
 mongoose.connect('mongodb://localhost:27017/goodreads', {
     useUnifiedTopology: true,
     useNewUrlParser: true,
