@@ -15,22 +15,6 @@ class Home extends Component {
       this.props.history.push("/dashboard");
     }
   }
-  render() {
-    return (
-      <Container>
-        <NavbarForm />
-        <Row>
-          <Col xs="6">
-            <HomeContent />
-          </Col>
-          <Col xs="6">
-            <RegisterForm />
-          </Col>
-        </Row>
-      </Container>
-    );
-  }
-}
 
 const mapStateToProps = (state) => ({
   // token: state.login.token,

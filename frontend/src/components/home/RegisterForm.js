@@ -42,18 +42,7 @@ class RegisterForm extends Component {
     this.props.updateRegisterField("image", image);
   };
 
-  onSubmit = (e) => {
-    e.preventDefault();
-    const { firstName, lastName, email, password, image } = this.props;
 
-    this.props.signupUser({
-      firstName,
-      lastName,
-      email,
-      password,
-      image,
-    });
-  };
 
   render() {
     const {

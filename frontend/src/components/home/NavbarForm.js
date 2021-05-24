@@ -70,7 +70,3 @@ const mapStateToProps = (state) => {
   const { email, password } = state.login;
   return { email, password };
 };
-
-export default connect(mapStateToProps, { updateLoginField, loginUser })(
-  NavbarForm
-);
