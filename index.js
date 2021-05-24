@@ -29,23 +29,23 @@ app.use("/api/reviews", reviewRouter);
 app.use("/api/todos", todoRouter);
 
 app.get("/*", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");
+    res.sendFile(__dirname + "/public/index.html");
 });
 
 mongoose.connect(
-  "mongodb://localhost:27017/good-reads",
-  {
-    useCreateIndex: true,
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  },
-  (err) => {
-    if (!err) console.log("Mongod Connected...");
-  }
+    "mongodb://localhost:27017/good-reads",
+    {
+        useCreateIndex: true,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false,
+    },
+    (err) => {
+        if (!err) console.log("Mongod Connected...");
+    }
 );
 
 app.listen(5000, (err) => {
-  if (!err) return console.log("welcome to good reads server");
-  console.log(err);
+    if (!err) return console.log("welcome to good reads server");
+    console.log(err);
 });
