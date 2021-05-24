@@ -14,7 +14,7 @@ A website simulates the popular good reads website using nodejs and react.
 git clone https://github.com/asmaaMahmoud022/goodReads-with-NodeJS-React
 ```
 ```
-cd Good-Reads
+cd goodReads-with-NodeJS-React
 ```
 ```
 npm install
@@ -34,8 +34,7 @@ ADMIN_PASSWORD=123456
 
 1- [Islam Reda](https://github.com/IslamReda)
 
-2- [Mohamed Elbeshlawy
-](https://github.com/Mohamedelbeshlawy)
+2- [Mohamed Elbeshlawy](https://github.com/Mohamedelbeshlawy)
 
 3- [Ahmed Ibrahim](https://github.com/ahmedibrahim22)
 
