@@ -17,3 +17,4 @@ class AdminLoggedInRoute extends Component {
 }
 const mapStateTopProps = (state) => ({ token: state.admin.token });
 
+export default connect(mapStateTopProps)(AdminLoggedInRoute);
