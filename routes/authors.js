@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Author = require('../models/author');
 const upload = require('../middlewares/imageUpload')
-const authUser = require('../middlewares/authMWare')
+const authUser = require('../middlewares/auth')
 
 
 

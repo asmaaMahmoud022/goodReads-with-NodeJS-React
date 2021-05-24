@@ -10,13 +10,15 @@ const authenticateJWT = (req, res, next) => {
 
         jwt.verify(token, accessTokenSecret, (err, user) => {
             if (err) {
-                return res.sendStatus(403);
+                return res.status(401).send({ message: "not authorized !!" })
             }
 
             req.user = user;
             next();
         });
     } else {
-        res.sendStatus(401);
+        return res.status(401).send({ message: "Send User Token Please !!" })
     }
 };
+
+module.exports = authenticateJWT

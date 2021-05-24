@@ -1,10 +1,10 @@
 
 const express = require('express')
 const app = express.Router();
-var Rate = require('../models/rating');
+var Rate = require('../models/rate');
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
-const authUser = require('../middlewares/authMWare')
+const authUser = require('../middlewares/auth')
 var User = require('../models/user');
 
 // Get all rates

@@ -4,7 +4,7 @@ const app = express.Router();
 var Category = require('../models/category');
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
-const authUser = require('../middlewares/authMWare')
+const authUser = require('../middlewares/auth')
 
 // Get all categories
 app.get('/', async(req, res) => {

@@ -1,7 +1,7 @@
 const express = require("express");
 const User = require("../models/user");
 const Todo = require("../models/todo");
-const authUser = require("../middlewares/authMWare");
+const authUser = require("../middlewares/auth");
 const router = express.Router();
 
 router.get("/", authUser, async (req, res) => {

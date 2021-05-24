@@ -4,7 +4,7 @@ const app = express.Router();
 var Review = require("../models/review");
 var bodyParser = require("body-parser");
 app.use(bodyParser.json());
-const authUser = require("../middlewares/authMWare");
+const authUser = require("../middlewares/auth");
 var User = require("../models/user");
 
 // Get all reviews

@@ -1,30 +1,19 @@
 const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
+
 
 const userSchema = new mongoose.Schema({
     firstName: { type: String, required: [true, "can't be blank"], max: 20 },
     lastName: { type: String, required: [true, "can't be blank"], max: 20 },
-    email: { type: String, required: [true, "can't be blank"], match: [/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/, 'Invalid Email'], unique: [true, 'Email in exists'] },
-    password: { type: String},
-    image: { type: String, required: true }
-})
-// , match: [/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/, 'Invalid Password'], min: 8 
-userSchema.pre('save', async function(next){
-    if (this.isNew) {
-        try {
-          hashed = await bcrypt.hash(this.password, 10);
-          this.password = hashed;
-        } catch (error) {
-          console.log(error);
-        }
-    }
-    next();
+    email: { type: String, match: [/\S+@\S+\.\S+/, 'Invalid Email'], unique: [true, 'Email in exists'] },
+    password: { type: String, match: [/(?=.*[0-9])/, 'Invalid Password'], min: 8 },
+    image: { type: String },
+    books: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' }
 })
 
 userSchema.methods.getFullName = function getFullName() {
-    return this.first_name + " " + this.last_name;
-};
+    return this.firstName + " " + this.lastName
+}
 
-const UserModel = mongoose.model("User", userSchema)
+const userModel = mongoose.model('User', userSchema)
 
-module.exports = UserModel
+module.exports = userModel

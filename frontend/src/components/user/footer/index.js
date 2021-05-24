@@ -23,8 +23,8 @@ function Footer() {
     <div>
       <div style={phantom} />
       <div style={style}>
-        <a href="https://github.com/aAbdelnaby88/Good-Reads/" target="_blank">
-          By ITI students - cloud platfrom development track - intake 40
+        <a href="https://github.com/asmaaMahmoud022/goodReads-with-NodeJS-React/" target="_blank">
+          By ITI students
         </a>
       </div>
     </div>

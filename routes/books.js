@@ -1,11 +1,11 @@
 var express = require("express");
 var router = express.Router();
 var Book = require("../models/book");
-var Rate = require("../models/rating");
+var Rate = require("../models/rate");
 var Review = require("../models/review");
 var Todo = require("../models/todo");
 
-const authUser = require("../middlewares/authMWare");
+const authUser = require("../middlewares/auth");
 const upload = require("../middlewares/imageUpload");
 
 router.get("/", async (req, res) => {
