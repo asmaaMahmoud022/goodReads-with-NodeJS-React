@@ -38,10 +38,7 @@ class Books extends Component {
     ]);
   };
 
-  onChange = (e) => {
-    const { name, value } = e.target;
-    this.props.updateBooksProps([{ prop: "currentBook." + name, value }]);
-  };
+
   onChangeImage = (e) => {
     const image = e.target.files[0];
     this.props.updateBooksProps([{ prop: "currentBook.image", value: image }]);
@@ -91,6 +88,8 @@ class Books extends Component {
                   onChange={this.onChange}
                   required
                 />
+
+
               </FormGroup>
               {!_id && (
                 <FormGroup>

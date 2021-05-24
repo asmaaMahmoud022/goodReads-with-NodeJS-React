@@ -75,14 +75,5 @@ class Home extends Component {
     );
   }
 }
-const mapStateToProps = (state) => {
-  const { activeTab, token } = state.admin;
-  return { activeTab, token };
-};
 
-export default connect(mapStateToProps, {
-  updateAdminProps,
-  getAllBooks,
-  getAllAuthors,
-  getAllCategories,
-})(Home);
+
